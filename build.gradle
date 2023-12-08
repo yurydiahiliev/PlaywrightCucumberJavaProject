@@ -1,0 +1,94 @@
+plugins {
+    id 'idea'
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+    id 'io.freefair.lombok' version '8.1.0'
+}
+
+group 'com.playwright.cucumber.project'
+version '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+def cucumberVersion = '7.14.0'
+def testNgVersion = '7.8.0'
+def allureVersion = '2.24.0'
+def playwrightVersion = '1.40.0'
+def allureCucumberVersion = '2.21.0'
+
+def cucumberThreadsOption = ['--threads', '3']
+def setParallel = "false"
+
+def cucumberOptions = ['--plugin', 'pretty',
+            '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
+            '--glue', 'com.playwright.cucumber.step_definitions',
+            'src/test/resources/features']
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "org.testng:testng:${testNgVersion}"
+    implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
+    implementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    implementation "io.cucumber:cucumber-testng:${cucumberVersion}"
+    implementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    implementation "io.qameta.allure:allure-cucumber7-jvm:${allureCucumberVersion}"
+    implementation "io.qameta.allure:allure-testng:${allureVersion}"
+}
+
+test {
+    useTestNG() {
+        useDefaultListeners = true
+        listeners << 'io.qameta.allure.testng.AllureTestNG'
+    }
+    scanForTestClasses = false
+    testLogging.showStandardStreams = true
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+    testCompile
+}
+
+javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+
+task cucumber() {
+    dependsOn assemble, compileTestJava
+    doLast {
+        javaexec {
+            systemProperty("allure.results.directory", "build/allure-results")
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            def isParallel = System.properties.getProperty("parallel", setParallel)
+            if (isParallel == "true") cucumberOptions.addAll(cucumberThreadsOption)
+            args = cucumberOptions
+        }
+    }
+}
+
+task pwServeTraces(type: JavaExec, group: 'pw') {
+    mainClass = 'com.microsoft.playwright.CLI'
+    classpath = sourceSets.main.runtimeClasspath
+    args 'show-trace', 'build/pw/' + System.getProperty("trace") + '.zip'
+    systemProperties = System.getProperties()
+}
+
+allure {
+    version = allureVersion
+}
+
+cucumber.finalizedBy 'allureReport'
