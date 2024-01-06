@@ -43,7 +43,8 @@ public class PlaywrightRunner {
     }
 
     private static Browser createBrowser(Playwright playwright) {
-        String browserType = System.getProperty("browser", "chromium");
+        String chromeBrowserName = "chrome";
+        String browserType = System.getProperty("browser", chromeBrowserName);
 
         BrowserType.LaunchOptions options = new BrowserType.LaunchOptions()
             .setHeadless(Configuration.headless)
@@ -52,14 +53,14 @@ public class PlaywrightRunner {
             .setTracesDir(Paths.get(Configuration.tracesPath));
 
         return switch (browserType.toLowerCase()) {
-            case "firefox" -> playwright.firefox().launch(options);
+            case "firefox" -> playwright.firefox().launch();
             case "webkit" -> playwright.webkit().launch(options);
-            default -> playwright.chromium().launch(options);
+            default -> playwright.chromium().launch(options.setChannel(chromeBrowserName));
         };
     }
 
-    static PlaywrightRunner get() {
-        return playwrightHolder.computeIfAbsent(Thread.currentThread().getId(), k -> {
+    static PlaywrightRunner pw() {
+        return playwrightHolder.computeIfAbsent(Thread.currentThread().getId(), pw -> {
             var playwright = createPlaywright();
             var browser = createBrowser(playwright);
             var browserContext = initBrowserContext(browser);
@@ -69,10 +70,14 @@ public class PlaywrightRunner {
     }
 
     private static BrowserContext initBrowserContext(Browser browser) {
+        BrowserContext browserContext;
         if (Configuration.baseUrl != null) {
-            return browser.newContext(new Browser.NewContextOptions().setBaseURL(Configuration.baseUrl));
+            browserContext = browser.newContext(new Browser.NewContextOptions().setBaseURL(Configuration.baseUrl));
+        } else {
+            browserContext = browser.newContext();
         }
-        return browser.newContext();
+        browserContext.setDefaultTimeout(Configuration.defaultTimeout);
+        return browserContext;
     }
 
     public static void clearSessions() {

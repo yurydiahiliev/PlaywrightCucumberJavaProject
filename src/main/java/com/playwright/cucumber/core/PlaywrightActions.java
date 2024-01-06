@@ -1,14 +1,14 @@
 package com.playwright.cucumber.core;
 
-import com.microsoft.playwright.BrowserContext;
-import com.microsoft.playwright.Locator;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Response;
+import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.WaitUntilState;
+
+import java.util.List;
 
 public class PlaywrightActions {
 
     public static void open(String url) {
-        getCurrentPage().navigate(url);
+        getCurrentPage().navigate(url, new Page.NavigateOptions().setWaitUntil(WaitUntilState.LOAD));
     }
 
     public static Response goBack() {
@@ -32,7 +32,11 @@ public class PlaywrightActions {
     }
 
     public static void waitForUrl(String expectedUrl) {
-        getCurrentPage().waitForURL(expectedUrl);
+        try {
+            getCurrentPage().waitForURL(expectedUrl);
+        } catch (PlaywrightException e) {
+            throw new PlaywrightException("Expected page to have: '" + expectedUrl + "' but was:\n" + getCurrentPage().url());
+        }
     }
 
     public static void clearCookies() {
@@ -45,11 +49,11 @@ public class PlaywrightActions {
     }
 
     private static Page getCurrentPage() {
-        return PlaywrightRunner.get().getPage();
+        return PlaywrightRunner.pw().getPage();
     }
 
     private static BrowserContext getCurrentBrowserContext() {
-        return PlaywrightRunner.get().getBrowserContext();
+        return PlaywrightRunner.pw().getBrowserContext();
     }
 
     public byte[] getScreenshot() {
@@ -58,5 +62,18 @@ public class PlaywrightActions {
 
     public byte[] getScreenshot(Page.ScreenshotOptions options) {
         return getCurrentPage().screenshot(options);
+    }
+
+    public static List<Page> getActiveTabs() {
+        return getCurrentBrowserContext().pages();
+    }
+
+    public static void switchToTab(int index) {
+        PlaywrightRunner.pw().setPage(getCurrentBrowserContext().pages().get(index));
+    }
+
+    public static void closeActiveTab() {
+        getCurrentPage().close();
+        switchToTab(getActiveTabs().size() - 1);
     }
 }
