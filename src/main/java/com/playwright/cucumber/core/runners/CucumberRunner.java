@@ -15,7 +15,7 @@ public class CucumberRunner extends AbstractTestNGCucumberTests {
 
     // to enable parallel tests, change @DataProvider(parallel=true)
     @Override
-    @DataProvider()
+    @DataProvider(parallel=true)
     public Object[][] scenarios() {
         return super.scenarios();
     }

@@ -43,6 +43,7 @@ dependencies {
     implementation "com.microsoft.playwright:playwright:${playwrightVersion}"
     implementation "io.cucumber:cucumber-java:${cucumberVersion}"
     implementation "io.cucumber:cucumber-testng:${cucumberVersion}"
+    implementation "io.cucumber:cucumber-picocontainer:${cucumberVersion}"
     implementation platform("io.qameta.allure:allure-bom:$allureVersion")
     implementation "io.qameta.allure:allure-cucumber7-jvm:${allureCucumberVersion}"
     implementation "io.qameta.allure:allure-testng:${allureVersion}"

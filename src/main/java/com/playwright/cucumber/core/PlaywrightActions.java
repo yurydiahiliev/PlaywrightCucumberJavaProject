@@ -23,6 +23,10 @@ public class PlaywrightActions {
         return new LocatorActions(getCurrentPage().locator(selector).filter(new Locator.FilterOptions().setHasText(withText)).first());
     }
 
+    public static LocatorActions findByAltText(String altText) {
+        return new LocatorActions(getCurrentPage().getByAltText(altText));
+    }
+
     public static LocatorActions $(String selector) {
         return find(selector);
     }
@@ -56,11 +60,11 @@ public class PlaywrightActions {
         return PlaywrightRunner.pw().getBrowserContext();
     }
 
-    public byte[] getScreenshot() {
+    public static byte[] getScreenshot() {
         return getCurrentPage().screenshot();
     }
 
-    public byte[] getScreenshot(Page.ScreenshotOptions options) {
+    public static byte[] getScreenshot(Page.ScreenshotOptions options) {
         return getCurrentPage().screenshot(options);
     }
 
