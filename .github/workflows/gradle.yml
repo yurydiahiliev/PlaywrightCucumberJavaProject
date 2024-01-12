@@ -20,7 +20,7 @@ jobs:
         distribution: 'temurin'
         cache: gradle
     - name: Build & Install
-      run: ./gradlew run --args="install-deps"
+      run: ./gradlew run --args="install --force chrome"
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2
