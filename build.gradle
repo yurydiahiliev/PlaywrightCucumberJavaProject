@@ -1,5 +1,4 @@
 plugins {
-    id 'application'
     id 'idea'
     id 'java'
     id 'io.qameta.allure' version '2.11.2'
@@ -8,18 +7,6 @@ plugins {
 
 group 'com.playwright.cucumber.project'
 version '1.0-SNAPSHOT'
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
 
 def cucumberVersion = '7.14.0'
 def testNgVersion = '7.8.0'
@@ -38,6 +25,18 @@ def cucumberOptions = [
         '--glue', 'com.playwright.cucumber.step_definitions',
         'src/test/resources/features'
 ]
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
 
 repositories {
     mavenCentral()
@@ -61,11 +60,10 @@ dependencies {
     implementation "io.qameta.allure:allure-cucumber7-jvm:${allureCucumberVersion}"
     implementation "io.qameta.allure:allure-testng:${allureVersion}"
 }
-ext.javaMainClass = "com.microsoft.playwright.CLI"
 
-application {
+tasks.register('initPlaywright', JavaExec) {
+    classpath = sourceSets.main.runtimeClasspath
     mainClass = "com.microsoft.playwright.CLI"
-    args = 'install --force chrome'
 }
 
 test {
@@ -91,7 +89,6 @@ tasks.register('cucumber', JavaExec) {
 
     dependsOn assemble, compileTestJava
 
-    systemProperty("allure.results.directory", "target/allure-results")
     mainClass = "io.cucumber.core.cli.Main"
     classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
     def isParallel = System.properties.getProperty("parallel", setParallel)
@@ -110,8 +107,6 @@ tasks.register('cucumberRerun', JavaExec) {
             '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
             '@target/failed_scenarios.txt'
     ]
-
-    systemProperty("allure.results.directory", "target/allure-results")
 
     mainClass = "io.cucumber.core.cli.Main"
     classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output

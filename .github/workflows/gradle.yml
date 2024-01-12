@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright/java:v1.40.0-jammy
@@ -20,10 +20,10 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Build & Install
-      run: ./gradlew run
+    - name: Initializing Playwright (Install browser)
+      run: ./gradlew clean initPlaywright --args="install --force chrome"
 
-    - name: Build with Gradle
+    - name: Run UI tests
       run: xvfb-run ./gradlew clean cucumber -Dparallel=true
 
     - name: Get Allure history
