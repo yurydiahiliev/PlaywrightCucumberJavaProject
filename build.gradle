@@ -64,6 +64,7 @@ dependencies {
 
 application {
     mainClass = "com.microsoft.playwright.CLI"
+    applicationDefaultJvmArgs = ['install --force chrome']
 }
 
 test {

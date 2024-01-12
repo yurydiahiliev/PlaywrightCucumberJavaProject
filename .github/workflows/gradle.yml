@@ -21,7 +21,7 @@ jobs:
         cache: gradle
 
     - name: Build & Install
-      run: ./gradlew run --args="install --force chrome"
+      run: ./gradlew run
 
     - name: Build with Gradle
       run: xvfb-run ./gradlew clean cucumber -Dparallel=true
