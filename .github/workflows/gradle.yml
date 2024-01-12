@@ -22,13 +22,5 @@ jobs:
     - name: Build & Install
       run: ./gradlew run --args="install --force chrome"
 
-    - name: Install XVFB
-      run: apt-get install xvfb -y
-
-    - name: Start XVFB
-      run: Xvfb :99 -ac -screen 0 1024x768x8 &
-
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: clean cucumber -Dparallel=true
+      run: xvfb-run ./gradlew clean cucumber -Dparallel=true
