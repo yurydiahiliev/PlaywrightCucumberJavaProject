@@ -64,7 +64,7 @@ dependencies {
 ext.javaMainClass = "com.microsoft.playwright.CLI"
 
 application {
-    mainClass = ext.javaMainClass
+    mainClass = "com.microsoft.playwright.CLI"
     args = 'install --force chrome'
 }
 
