@@ -2,7 +2,7 @@ plugins {
     id 'idea'
     id 'java'
     id 'io.qameta.allure' version '2.11.2'
-    id 'io.freefair.lombok' version '8.1.0'
+    id 'io.freefair.lombok' version '8.4'
 }
 
 group 'com.playwright.cucumber.project'
@@ -30,10 +30,13 @@ def logbackVersion = '1.4.14'
 def cucumberThreadsOption = ['--threads', '3']
 def setParallel = "false"
 
-def cucumberOptions = ['--plugin', 'pretty',
-            '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
-            '--glue', 'com.playwright.cucumber.step_definitions',
-            'src/test/resources/features']
+def cucumberOptions = [
+        '--plugin', 'pretty',
+        '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
+        '--plugin', "rerun:target/failed_scenarios.txt",
+        '--glue', 'com.playwright.cucumber.step_definitions',
+        'src/test/resources/features'
+]
 
 repositories {
     mavenCentral()
@@ -71,45 +74,54 @@ test {
     }
 }
 
-javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
 
-task cucumber() {
+tasks.register('cucumber', JavaExec) {
     dependsOn assemble, compileTestJava
-    doLast {
-        javaexec {
-            systemProperty("allure.results.directory", "build/allure-results")
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            def isParallel = System.properties.getProperty("parallel", setParallel)
-            if (isParallel == "true") cucumberOptions.addAll(cucumberThreadsOption)
-            args = cucumberOptions
-        }
-    }
+
+    systemProperty("allure.results.directory", "build/allure-results")
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+    def isParallel = System.properties.getProperty("parallel", setParallel)
+    if (isParallel == "true") cucumberOptions.addAll(cucumberThreadsOption)
+    args = cucumberOptions
 }
 
-task cucumberRerun() {
-    onlyIf { cucumber.state.failure }
-    doLast {
-        javaexec {
-            def options = [
-                    '--plugin', 'pretty',
-                    '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
-                    '@target/failed_scenarios.txt']
-            systemProperty("allure.results.directory", "build/allure-results")
-            main = "io.cucumber.core.cli.Main"
-            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
-            def isParallel = System.properties.getProperty("parallel", setParallel)
-            if (isParallel == "true") options.addAll(cucumberThreadsOption)
-            args = options
-        }
-    }
+tasks.register('cucumberRerun', JavaExec) {
+    onlyIf { tasks.cucumber.state.failure }
+
+    def options = [
+            '--plugin', 'pretty',
+            '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
+            '@target/failed_scenarios.txt'
+    ]
+
+    systemProperty("allure.results.directory", "build/allure-results")
+
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+    def isParallel = System.properties.getProperty("parallel", setParallel)
+    if (isParallel == "true") options.addAll(cucumberThreadsOption)
+    args = options
 }
 
-task pwServeTraces(type: JavaExec, group: 'pw') {
+tasks.register('pwServeTraces', JavaExec) {
     mainClass = 'com.microsoft.playwright.CLI'
     classpath = sourceSets.main.runtimeClasspath
     args 'show-trace', 'build/pw/' + System.getProperty("trace") + '.zip'
-    systemProperties = System.getProperties()
+    systemProperties = System.getProperties() as Map<String, ?>
+}
+
+configure(cucumber) {
+    group = 'cucumber'
+    description = 'Running UI tests'
+}
+
+configure(cucumberRerun) {
+    group = 'cucumber'
+    description = 'Execute rerun UI tests'
 }
 
 allure {
