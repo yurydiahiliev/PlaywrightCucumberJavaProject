@@ -28,9 +28,7 @@ jobs:
           cache: gradle
 
       - name: Initializing Playwright (Install browser)
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: clean initPlaywright --args="install --force chrome"
+        run: ./gradlew clean initPlaywright --args="install --force chrome"
 
       - name: Run UI tests
         uses: gradle/gradle-build-action@v2
