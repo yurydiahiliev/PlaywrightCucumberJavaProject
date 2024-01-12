@@ -29,11 +29,13 @@ jobs:
 
       - name: Initializing Playwright (Install browser)
         uses: gradle/gradle-build-action@v2
-        run: ./gradlew clean initPlaywright --args="install --force chrome"
+        with:
+          arguments: clean initPlaywright --args="install --force chrome"
 
       - name: Run UI tests
         uses: gradle/gradle-build-action@v2
-        run: xvfb-run ./gradlew clean cucumber -Dparallel=true
+        with:
+          arguments: xvfb-run clean cucumber -Dparallel=true
 
       - name: Get Allure history
         uses: actions/checkout@v2
