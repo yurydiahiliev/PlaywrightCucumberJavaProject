@@ -61,10 +61,11 @@ dependencies {
     implementation "io.qameta.allure:allure-cucumber7-jvm:${allureCucumberVersion}"
     implementation "io.qameta.allure:allure-testng:${allureVersion}"
 }
+ext.javaMainClass = "com.microsoft.playwright.CLI"
 
 application {
-    mainClass = "com.microsoft.playwright.CLI"
-    applicationDefaultJvmArgs = ['install --force chrome']
+    mainClass = ext.javaMainClass
+    args = 'install --force chrome'
 }
 
 test {
