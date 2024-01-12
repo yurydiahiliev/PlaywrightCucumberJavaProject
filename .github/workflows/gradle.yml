@@ -19,6 +19,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
+
     - name: Build & Install
       run: ./gradlew run --args="install --force chrome"
 
