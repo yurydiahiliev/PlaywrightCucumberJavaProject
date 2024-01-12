@@ -89,7 +89,7 @@ tasks.register('cucumber', JavaExec) {
 
     dependsOn assemble, compileTestJava
 
-    systemProperty("allure.results.directory", "build/allure-results")
+    systemProperty("allure.results.directory", "target/allure-results")
     mainClass = "io.cucumber.core.cli.Main"
     classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
     def isParallel = System.properties.getProperty("parallel", setParallel)
@@ -109,7 +109,7 @@ tasks.register('cucumberRerun', JavaExec) {
             '@target/failed_scenarios.txt'
     ]
 
-    systemProperty("allure.results.directory", "build/allure-results")
+    systemProperty("allure.results.directory", "target/allure-results")
 
     mainClass = "io.cucumber.core.cli.Main"
     classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
