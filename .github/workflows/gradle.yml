@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright/java:v1.40.0-jammy
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 17

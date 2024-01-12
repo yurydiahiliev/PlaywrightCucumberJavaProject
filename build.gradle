@@ -79,6 +79,9 @@ javadoc {
 }
 
 tasks.register('cucumber', JavaExec) {
+    group = 'cucumber'
+    description = 'Running UI tests'
+
     dependsOn assemble, compileTestJava
 
     systemProperty("allure.results.directory", "build/allure-results")
@@ -90,6 +93,9 @@ tasks.register('cucumber', JavaExec) {
 }
 
 tasks.register('cucumberRerun', JavaExec) {
+    group = 'cucumber'
+    description = 'Execute rerun UI tests'
+
     onlyIf { tasks.cucumber.state.failure }
 
     def options = [
@@ -112,16 +118,6 @@ tasks.register('pwServeTraces', JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
     args 'show-trace', 'build/pw/' + System.getProperty("trace") + '.zip'
     systemProperties = System.getProperties() as Map<String, ?>
-}
-
-configure(cucumber) {
-    group = 'cucumber'
-    description = 'Running UI tests'
-}
-
-configure(cucumberRerun) {
-    group = 'cucumber'
-    description = 'Execute rerun UI tests'
 }
 
 allure {
