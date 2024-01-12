@@ -1,0 +1,4 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Fri Jan 12 18:11:54 GMT 2024","Fri Jan 12 18:12:00 GMT 2024","5646","","Search in Google Playwright Library and check image commandline 3","","Search Playwright in google 3","","Search Playwright in google 3",""
+"passed","Fri Jan 12 18:11:54 GMT 2024","Fri Jan 12 18:12:00 GMT 2024","5421","","Search in Google Playwright Library and check image commandline 2","","Search Playwright in google 2","","Search Playwright in google 2",""
+"passed","Fri Jan 12 18:11:54 GMT 2024","Fri Jan 12 18:12:00 GMT 2024","5569","","Search in Google Playwright Library and check image commandline","","Search Playwright in google 1","","Search Playwright in google 1",""
