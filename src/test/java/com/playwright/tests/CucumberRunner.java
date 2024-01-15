@@ -16,9 +16,9 @@ import org.testng.annotations.Listeners;
 )
 public class CucumberRunner extends AbstractTestNGCucumberTests {
 
-    // to enable parallel tests, change @DataProvider(parallel=true)
+    // to enable parallel tests locally, change @DataProvider(parallel=true)
     @Override
-    @DataProvider(parallel=true)
+    @DataProvider()
     public Object[][] scenarios() {
         return super.scenarios();
     }
