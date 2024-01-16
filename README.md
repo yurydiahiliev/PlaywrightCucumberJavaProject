@@ -38,3 +38,16 @@ If you want to run tests in parallel locally, use the following command with the
 ### Github Actions
 
 The tests are automatically executed using GitHub Actions. The workflow configuration is available in .github/workflows/gradle
+
+Pre-setup Github Actions (for Allure report generation)
+
+- Go to Profile -> Settings -> Developer Settings -> Personal access tokens -> Tokens (classic)
+- Generate token with name GITHUB_TOKEN
+- Go to Repository -> Settings -> Actions -> General
+- In "Workflow permissions" section choose option "Read and write permissions" -> Save
+- Go to Repository -> Settings -> Pages
+- In "Build and deployment" section choose "Source" option "Deploy from a branch"
+- Create branch "gh-pages" if not exists
+- Select this branch with "/(root)" -> Save
+
+Github Actions is ready for deploying Allure report after test phase execution
