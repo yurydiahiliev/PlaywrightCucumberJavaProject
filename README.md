@@ -51,3 +51,20 @@ Pre-setup Github Actions (for Allure report generation)
 - Select this branch with "/(root)" -> Save
 
 Github Actions is ready for deploying Allure report after test phase execution
+
+### Selenium Grid 4
+
+For running tests inside Selenium Grid, should be run docker-compose file for Apple Silicon (M1 - M3) in the project root before
+
+To set up and tear down Selenium Grid use the following commands
+
+```bash
+docker-compose up -d
+docker-compose down
+```
+
+To run tests
+
+```bash
+SELENIUM_REMOTE_URL=http://localhost:4444 ./gradlew clean cucumber -Dparallel=true
+```
