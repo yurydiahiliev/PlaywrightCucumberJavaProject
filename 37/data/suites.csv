@@ -1,0 +1,7 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Thu Feb 08 20:13:42 GMT 2024","Thu Feb 08 20:13:44 GMT 2024","2363","","Search in Google Playwright Library and check image commandline","","Search Playwright in google 6","","Search Playwright in google 6",""
+"passed","Thu Feb 08 20:13:42 GMT 2024","Thu Feb 08 20:13:44 GMT 2024","2379","","Search in Google Playwright Library and check image commandline","","Search Playwright in google 4","","Search Playwright in google 4",""
+"passed","Thu Feb 08 20:13:27 GMT 2024","Thu Feb 08 20:13:42 GMT 2024","15124","","Search in Google Playwright Library and check image commandline 2","","Search Playwright in google 2","","Search Playwright in google 2",""
+"passed","Thu Feb 08 20:13:27 GMT 2024","Thu Feb 08 20:13:42 GMT 2024","15248","","Search in Google Playwright Library and check image commandline 3","","Search Playwright in google 3","","Search Playwright in google 3",""
+"passed","Thu Feb 08 20:13:27 GMT 2024","Thu Feb 08 20:13:42 GMT 2024","15008","","Search in Google Playwright Library and check image commandline","","Search Playwright in google 1","","Search Playwright in google 1",""
+"passed","Thu Feb 08 20:13:42 GMT 2024","Thu Feb 08 20:13:44 GMT 2024","2400","","Search in Google Playwright Library and check image commandline","","Search Playwright in google 5","","Search Playwright in google 5",""
