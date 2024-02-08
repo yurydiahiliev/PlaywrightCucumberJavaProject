@@ -129,3 +129,4 @@ allure {
 
 cucumber.finalizedBy cucumberRerun
 cucumber.finalizedBy('allureReport')
+test.finalizedBy('allureReport')

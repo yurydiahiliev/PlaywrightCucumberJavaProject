@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Tests" parallel="none" thread-count="1">
+<suite name="Tests" parallel="classes" data-provider-thread-count="3">
     <listeners>
         <listener class-name="com.playwright.cucumber.core.testng.listeners.TestListener"/>
+        <listener class-name="com.playwright.cucumber.core.testng.listeners.RetryTransformer"/>
     </listeners>
     <test name="Cucumber Tests" verbose="1">
         <classes>
