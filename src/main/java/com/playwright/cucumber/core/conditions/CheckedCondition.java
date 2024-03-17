@@ -6,10 +6,9 @@ import com.playwright.cucumber.core.Configuration;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-public class IsHiddenCondition implements Condition {
-
+public class CheckedCondition implements Condition {
     @Override
-    public void verify(Locator locatorActions) {
-        assertThat(locatorActions).isHidden(new LocatorAssertions.IsHiddenOptions().setTimeout(Configuration.defaultTimeout));
+    public void verify(Locator locator) {
+        assertThat(locator).isChecked(new LocatorAssertions.IsCheckedOptions().setTimeout(Configuration.defaultTimeout));
     }
 }

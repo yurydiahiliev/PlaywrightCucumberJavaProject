@@ -1,7 +1,11 @@
 package com.playwright.cucumber.core;
 
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.options.AriaRole;
 import com.playwright.cucumber.core.conditions.Condition;
+import com.playwright.cucumber.core.conditions.network.NetworkCondition;
+
+import java.util.List;
 
 public record LocatorActions(Locator locator) {
 
@@ -25,6 +29,15 @@ public record LocatorActions(Locator locator) {
         return find(selector);
     }
 
+
+    public LocatorActions role(AriaRole role) {
+        return PlaywrightActions.role(role);
+    }
+
+    public LocatorActions role(AriaRole role, String filterWithText) {
+        return PlaywrightActions.role(role, filterWithText);
+    }
+
     public LocatorActions clear() {
         locator.clear();
         return this;
@@ -32,6 +45,11 @@ public record LocatorActions(Locator locator) {
 
     public LocatorActions fill(String text) {
         locator.fill(text);
+        return this;
+    }
+
+    public LocatorActions fill(String text, NetworkCondition fillConditions) {
+        fillConditions.wait(() -> locator.fill(text));
         return this;
     }
 
@@ -57,6 +75,17 @@ public record LocatorActions(Locator locator) {
 
     public LocatorActions click() {
         locator.click();
+        return this;
+    }
+
+    public LocatorActions click(NetworkCondition clickConditions) {
+        clickConditions.wait(locator::click);
+        return this;
+    }
+
+    public LocatorActions clickWithNewPage() {
+        var newPage = PlaywrightRunner.pw().getBrowserContext().waitForPage(locator::click);
+        PlaywrightRunner.pw().setPage(newPage);
         return this;
     }
 
@@ -111,8 +140,11 @@ public record LocatorActions(Locator locator) {
         return this;
     }
 
-    public LocatorActions all() {
-        locator.all();
-        return this;
+    public List<Locator> all() {
+        return locator.all();
+    }
+
+    public int size() {
+        return all().size();
     }
 }

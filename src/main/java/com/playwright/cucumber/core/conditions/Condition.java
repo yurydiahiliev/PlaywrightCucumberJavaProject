@@ -6,6 +6,8 @@ public interface Condition {
 
     Condition visible = new VisibleCondition();
     Condition hidden = new IsHiddenCondition();
+    Condition checked = new CheckedCondition();
+    Condition disabled = new DisabledCondition();
 
     static Condition visibleUntil(Integer maxTimeout) {
         return new VisibleUntil(maxTimeout);
@@ -21,6 +23,10 @@ public interface Condition {
 
     static Condition value(String expectedValue) {
         return new ValueCondition(expectedValue);
+    }
+
+    static Condition count(int expectedCount) {
+        return new HasCountCondition(expectedCount);
     }
 
     static Condition attribute(String attributeName, String expectedValue) {

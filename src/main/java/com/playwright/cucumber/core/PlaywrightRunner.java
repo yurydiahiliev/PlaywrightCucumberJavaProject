@@ -59,7 +59,7 @@ public class PlaywrightRunner {
         };
     }
 
-    static PlaywrightRunner pw() {
+    public static PlaywrightRunner pw() {
         return playwrightHolder.computeIfAbsent(Thread.currentThread().getId(), pw -> {
             var playwright = createPlaywright();
             var browser = createBrowser(playwright);

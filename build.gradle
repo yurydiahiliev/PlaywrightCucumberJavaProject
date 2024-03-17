@@ -11,7 +11,7 @@ version '1.0-SNAPSHOT'
 def cucumberVersion = '7.14.0'
 def testNgVersion = '7.8.0'
 def allureVersion = '2.24.0'
-def playwrightVersion = '1.41.2'
+def playwrightVersion = '1.42.0'
 def allureCucumberVersion = '2.21.0'
 def logbackVersion = '1.4.14'
 

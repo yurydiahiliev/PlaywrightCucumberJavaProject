@@ -1,6 +1,7 @@
 package com.playwright.cucumber.core;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitUntilState;
 
 import java.util.List;
@@ -33,6 +34,42 @@ public class PlaywrightActions {
 
     public static LocatorActions $(String selector, String filterWithText) {
         return find(selector, filterWithText);
+    }
+
+    public static LocatorActions role(AriaRole role) {
+        return new LocatorActions(getCurrentPage().getByRole(role));
+    }
+
+    public static LocatorActions role(AriaRole role, String withAccessibilityName) {
+        return new LocatorActions(getCurrentPage().getByRole(role, new Page.GetByRoleOptions().setName(withAccessibilityName)));
+    }
+
+    public static LocatorActions testId(String testIdValue) {
+        return new LocatorActions(getCurrentPage().getByTestId(testIdValue));
+    }
+
+    public static LocatorActions byText(String textInElement) {
+        return new LocatorActions(getCurrentPage().getByText(textInElement));
+    }
+
+    public static LocatorActions text(String text, boolean caseSensitive) {
+        return new LocatorActions(getCurrentPage().getByText(text, new Page.GetByTextOptions().setExact(caseSensitive)));
+    }
+
+    public static LocatorActions label(String labelValue) {
+        return new LocatorActions(getCurrentPage().getByLabel(labelValue));
+    }
+
+    public static LocatorActions placeholder(String placeholderValue) {
+        return new LocatorActions(getCurrentPage().getByPlaceholder(placeholderValue));
+    }
+
+    public static LocatorActions findAll(String selector) {
+        return new LocatorActions(getCurrentPage().locator(selector));
+    }
+
+    public static LocatorActions $$(String selector) {
+        return findAll(selector);
     }
 
     public static void waitForUrl(String expectedUrl) {
