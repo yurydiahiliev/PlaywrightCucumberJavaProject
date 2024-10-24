@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
@@ -50,6 +51,7 @@ public class PlaywrightRunner {
             .setHeadless(Configuration.headless)
             .setTimeout(Configuration.browserToStartTimeout)
             .setDevtools(Configuration.devTools)
+            .setArgs(List.of("--disable-web-security"))
             .setTracesDir(Paths.get(Configuration.tracesPath));
 
         return switch (browserType.toLowerCase()) {
@@ -72,7 +74,10 @@ public class PlaywrightRunner {
     private static BrowserContext initBrowserContext(Browser browser) {
         BrowserContext browserContext;
         if (Configuration.baseUrl != null) {
-            browserContext = browser.newContext(new Browser.NewContextOptions().setBaseURL(Configuration.baseUrl));
+            browserContext = browser.newContext(new Browser.NewContextOptions()
+                                                    .setBaseURL(Configuration.baseUrl)
+                                                    .setBypassCSP(true)
+                                                    .setJavaScriptEnabled(true));
         } else {
             browserContext = browser.newContext();
         }
