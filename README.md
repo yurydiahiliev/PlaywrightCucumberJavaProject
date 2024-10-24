@@ -1,12 +1,12 @@
 # Playwright Cucumber Tests
 
-This repository contains automated tests for your project using Playwright and Cucumber. The tests are written in Java 17 and managed by Gradle 8.4.
+This repository contains automated tests for your project using Playwright and Cucumber. The tests are written in Java 21 and managed by Gradle 8.4.
 
 ## Tech Stack
 
-- **Java 17**: The programming language used for writing the tests.
+- **Java 21**: The programming language used for writing the tests.
 - **Gradle 8.4**: The build automation tool used for managing the project and running the tests.
-- **Playwright** 1.40 with Chrome 120.0
+- **Playwright** 1.48 with Chrome 130.0
 
 ## Getting Started
 
