@@ -1,7 +1,7 @@
 plugins {
     id 'idea'
     id 'java'
-    id 'io.qameta.allure' version '2.11.2'
+    id 'io.qameta.allure' version '2.12.0'
     id 'io.freefair.lombok' version '8.4'
 }
 
@@ -10,9 +10,9 @@ version '1.0-SNAPSHOT'
 
 def cucumberVersion = '7.14.0'
 def testNgVersion = '7.8.0'
-def allureVersion = '2.24.0'
+def allureVersion = '2.29.0'
 def playwrightVersion = '1.48.0'
-def allureCucumberVersion = '2.21.0'
+def allureCucumberVersion = '2.29.0'
 def logbackVersion = '1.4.14'
 
 def cucumberThreadsOption = ['--threads', '3']
@@ -21,6 +21,7 @@ def setParallel = "false"
 def cucumberOptions = [
         '--plugin', 'pretty',
         '--plugin', 'io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm',
+        '--plugin', 'json:target/allure-results/cucumber.json',
         '--plugin', "rerun:target/failed_scenarios.txt",
         '--glue', 'com.playwright.cucumber.step_definitions',
         'src/test/resources/features'
